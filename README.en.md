@@ -143,6 +143,15 @@ examples/            9 example PDFs + a 36-shot showcase
 
 Generated art policy: cover/body art must be **text-free generated images**; all lettering is set as vectors by the layout layer, and books containing generated images say so in captions and the colophon.
 
+## Web showcase & demo
+
+Alongside the skill itself, this repository carries two deployable directories:
+
+- `web/` — a showcase site (9 example books, 6 style packs, the diagram track, the gate table) plus a demo that turns a one-line topic into cover copy, a style pick and a chapter outline (Next.js, deployed on Vercel)
+- `workers/bookforge-api/` — the API proxy that demo calls. **The Anthropic API key lives only as a secret on this Worker** — it is never in the frontend bundle or in this repository (Cloudflare Workers)
+
+See [DEPLOY.md](DEPLOY.md) for the deployment steps. Neither is needed to run the skill locally.
+
 ## License
 
 Code & docs: MIT. Bundled fonts: OFL 1.1 ([notice](assets/fonts/LICENSES.md)). The nine example PDFs are demo outputs of the skill.
