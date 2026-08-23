@@ -90,10 +90,18 @@ ln -sfn "$PWD" ~/.agents/skills/bookforge
 
 심링크 명령이 다릅니다 — `ln` 대신 `mklink /J`(정션)를 쓰면 관리자 권한 없이 됩니다.
 
+저장소를 받은 뒤 `scripts\setup-windows.bat`를 실행하면 Claude Code·Codex 양쪽 스킬 폴더에 정션을 걸어 줍니다(관리자 권한 불필요).
+
 ```cmd
-git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\bookforge
+git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\Documents\bookforge
+%USERPROFILE%\Documents\bookforge\scripts\setup-windows.bat
+```
+
+수동으로 하려면:
+
+```cmd
 mkdir "%USERPROFILE%\.claude\skills" 2>nul
-mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\bookforge"
+mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\Documents\bookforge"
 ```
 
 요구 사항 설치도 명령이 다릅니다: `winget install Typst.Typst`, `pip install pymupdf markdown-it-py`, `npm i -g playwright && npx playwright install chromium`. 스크립트는 `python3` 대신 `python`으로 실행합니다.

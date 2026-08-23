@@ -88,10 +88,18 @@ Requirements (self-checked by the skill):
 
 The symlink command differs — use `mklink /J` (a junction), which needs no administrator rights.
 
+After cloning, run `scripts\setup-windows.bat` — it junctions the repo into both the Claude Code and Codex skill folders (no administrator rights needed).
+
 ```cmd
-git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\bookforge
+git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\Documents\bookforge
+%USERPROFILE%\Documents\bookforge\scripts\setup-windows.bat
+```
+
+Or do it by hand:
+
+```cmd
 mkdir "%USERPROFILE%\.claude\skills" 2>nul
-mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\bookforge"
+mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\Documents\bookforge"
 ```
 
 Requirements install differently too: `winget install Typst.Typst`, `pip install pymupdf markdown-it-py`, `npm i -g playwright && npx playwright install chromium`. Run the scripts with `python`, not `python3`.
