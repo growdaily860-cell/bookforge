@@ -14,6 +14,8 @@ from html import escape as _esc
 from pathlib import Path
 from string import Template
 
+from _npm import npm_root_global
+
 try:  # PyMuPDF 1.24+ 신 모듈명, 구버전은 fitz만 제공
     import pymupdf as fitz
 except ImportError:
@@ -228,8 +230,7 @@ def build(book_dir: Path, book: dict, outline: dict, style_dir: Path, skill: Pat
     page1.write_text(html, encoding="utf-8")
 
     env = dict(os.environ)
-    env["NODE_PATH"] = subprocess.run(["npm", "root", "-g"], capture_output=True,
-                                      text=True).stdout.strip()
+    env["NODE_PATH"] = npm_root_global()
     printer = skill / "scripts" / "print_pdf.mjs"
     pdf1 = ts / "pass1.pdf"
     r = subprocess.run(["node", str(printer), str(page1), str(pdf1)],

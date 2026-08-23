@@ -86,6 +86,18 @@ ln -sfn "$PWD" ~/.agents/skills/bookforge
 - **전역 Playwright(Chromium)** — `insight`·`magazine` **그리고 도해(diagrams/)를 쓰는 모든 책**(도해 프리렌더는 Typst 스타일에서도 Chromium 하네스를 거친다) — `npm i -g playwright && npx playwright install chromium`. 빌드는 **전역** `npm root -g`에서 playwright를 해석하므로 프로젝트 로컬 설치로는 안 잡힌다
 - **도해(diagrams/)를 쓰는 책만** — 렌더러는 저장소에 커밋된 벤더 번들(`vendor/antv-ssr.bundle.mjs`, `@antv/infographic` 0.2.19 고정)을 쓴다. **`npm ci`는 불필요** — npm 레지스트리가 사라져도 재현된다. 번들이 유실됐을 때만 스킬 폴더에서 `npm ci && node vendor/build-bundle.mjs`로 복구
 
+### Windows
+
+심링크 명령이 다릅니다 — `ln` 대신 `mklink /J`(정션)를 쓰면 관리자 권한 없이 됩니다.
+
+```cmd
+git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\bookforge
+mkdir "%USERPROFILE%\.claude\skills" 2>nul
+mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\bookforge"
+```
+
+요구 사항 설치도 명령이 다릅니다: `winget install Typst.Typst`, `pip install pymupdf markdown-it-py`, `npm i -g playwright && npx playwright install chromium`. 스크립트는 `python3` 대신 `python`으로 실행합니다.
+
 폰트는 OFL 5종(Pretendard·Noto Serif KR·Paperlogy·Gmarket Sans·Barlow)이 **전량 TrueType(TTF)**으로 레포에 동봉되어 바로 렌더됩니다 — Chromium print-to-PDF는 CFF(.otf) 서브셋을 못 해 페이지마다 글리프를 벡터로 다시 그리는 Type3로 조용히 폴백한다(실측: 동일 본문 기준 OTF는 Type3 오브젝트 19개, 변환한 TTF는 Type0 서브셋 1개·Type3 0개). G2 게이트가 이 Type3 0건을 하드 조건으로 강제한다 — [라이선스 고지](assets/fonts/LICENSES.md).
 
 ## 사용법

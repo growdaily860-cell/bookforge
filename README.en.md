@@ -84,6 +84,18 @@ Requirements (self-checked by the skill):
 - **A global Playwright + Chromium** — `insight`, `magazine`, **and any book that uses `diagrams/`** (diagram prerendering runs through the Chromium harness even for Typst-engine styles) — `npm i -g playwright && npx playwright install chromium`; the build resolves playwright from the **global** `npm root -g`, so a project-local install is not picked up
 - **Only for books using `diagrams/`** — the renderer uses a bundle already committed to the repo (`vendor/antv-ssr.bundle.mjs`, pinned `@antv/infographic` 0.2.19). **No `npm ci` is needed** — it reproduces even if the npm registry disappears. Only run `npm ci && node vendor/build-bundle.mjs` inside the skill folder if the bundle is somehow lost
 
+### Windows
+
+The symlink command differs — use `mklink /J` (a junction), which needs no administrator rights.
+
+```cmd
+git clone https://github.com/gongnyang/bookforge.git %USERPROFILE%\bookforge
+mkdir "%USERPROFILE%\.claude\skills" 2>nul
+mklink /J "%USERPROFILE%\.claude\skills\bookforge" "%USERPROFILE%\bookforge"
+```
+
+Requirements install differently too: `winget install Typst.Typst`, `pip install pymupdf markdown-it-py`, `npm i -g playwright && npx playwright install chromium`. Run the scripts with `python`, not `python3`.
+
 Five OFL fonts (Pretendard, Noto Serif KR, Paperlogy, Gmarket Sans, Barlow) ship as **TrueType (TTF) throughout** and render out of the box — Chromium's print-to-PDF path cannot subset CFF (.otf) outlines and silently falls back to Type3, redrawing every glyph as a per-page vector (measured: the same body text produces 19 Type3 objects from the OTF source versus 1 Type0 subset and 0 Type3 objects from the converted TTF). Gate G2 enforces zero Type3 objects as a hard condition — [notice](assets/fonts/LICENSES.md).
 
 ## Use

@@ -9,6 +9,8 @@ Output <book_dir>/draft/book.pdf   (never writes final/ — that is qc_gate's jo
 import json, os, shutil, subprocess, sys
 from pathlib import Path
 
+from _npm import npm_root_global
+
 SKILL = Path(__file__).resolve().parent.parent
 FONTS = SKILL / "assets" / "fonts"
 
@@ -38,8 +40,7 @@ def render_diagrams(book_dir: Path, book: dict):
     if book.get("images") == "none":
         die('book.json images="none"인데 diagrams/에 도해 사이드카가 있음')
     env = dict(os.environ)
-    env["NODE_PATH"] = subprocess.run(["npm", "root", "-g"], capture_output=True,
-                                      text=True).stdout.strip()
+    env["NODE_PATH"] = npm_root_global()
     r = subprocess.run(["node", str(SKILL / "scripts" / "render_diagrams.mjs"),
                         str(book_dir), "--style", book["style"]],
                        capture_output=True, text=True, env=env)
