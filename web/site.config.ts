@@ -8,7 +8,7 @@
  * 배포 후 아래 workerUrl 한 줄을 본인 Worker 주소로 바꿔 push 하면 데모가 켜진다.
  * Vercel 환경변수 NEXT_PUBLIC_BOOKFORGE_API 를 설정하면 그쪽이 우선한다.
  */
-const workerUrl = "";
+const workerUrl = "https://bookforge-api.growdaily860.workers.dev";
 
 export const siteConfig = {
   name: "bookforge",
