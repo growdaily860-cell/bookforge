@@ -1,23 +1,30 @@
 /**
  * bookforge demo API — Cloudflare Worker
  *
- * 이 Worker의 존재 이유는 하나다: Anthropic API 키를 브라우저와 Vercel 밖에 두는 것.
- * 키는 `wrangler secret put ANTHROPIC_API_KEY` 로만 들어가고, 프런트엔드는 이 Worker의
+ * 이 Worker의 존재 이유는 하나다: OpenAI API 키를 브라우저와 Vercel 밖에 두는 것.
+ * 키는 `wrangler secret put OPENAI_API_KEY` 로만 들어가고, 프런트엔드는 이 Worker의
  * 공개 URL만 안다. Worker는 Origin·입력 길이·요청 빈도를 검사한 뒤에야 모델을 호출한다.
  */
-import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import OpenAI from "openai";
+import { zodTextFormat } from "openai/helpers/zod";
 import * as z from "zod/v4";
 
 export interface Env {
-  /** wrangler secret put ANTHROPIC_API_KEY */
-  ANTHROPIC_API_KEY: string;
+  /** wrangler secret put OPENAI_API_KEY */
+  OPENAI_API_KEY: string;
   /** 쉼표로 구분한 허용 Origin. 예: "https://bookforge.vercel.app,https://*.vercel.app" */
   ALLOWED_ORIGINS?: string;
-  /** 기본 claude-opus-5 */
+  /** 기본 gpt-5.5 */
   MODEL?: string;
   /** IP당 분당 요청 수. 기본 8 */
   RATE_LIMIT_PER_MIN?: string;
+}
+
+const DEFAULT_MODEL = "gpt-5.5";
+
+/** reasoning 파라미터는 추론 모델에만 허용된다 — gpt-4o 계열에 보내면 400이 난다. */
+function supportsReasoning(model: string): boolean {
+  return /^(gpt-5|o[1-9])/.test(model);
 }
 
 const STYLES = [
@@ -160,8 +167,8 @@ export default {
       return json(
         {
           ok: true,
-          configured: Boolean(env.ANTHROPIC_API_KEY),
-          model: env.MODEL ?? "claude-opus-5",
+          configured: Boolean(env.OPENAI_API_KEY),
+          model: env.MODEL ?? DEFAULT_MODEL,
         },
         200,
         origin,
@@ -174,9 +181,9 @@ export default {
     if (request.method !== "POST") {
       return json({ error: "POST만 허용됩니다." }, 405, origin);
     }
-    if (!env.ANTHROPIC_API_KEY) {
+    if (!env.OPENAI_API_KEY) {
       return json(
-        { error: "서버에 API 키가 설정되지 않았습니다. (wrangler secret put ANTHROPIC_API_KEY)" },
+        { error: "서버에 API 키가 설정되지 않았습니다. (wrangler secret put OPENAI_API_KEY)" },
         503,
         origin,
       );
@@ -221,21 +228,29 @@ export default {
       ? `주제: ${topic}\n\n스타일은 "${requestedStyle}"로 고정한다. styleReason에는 이 스타일의 지면 구조로 이 주제를 어떻게 풀지 설명한다.`
       : `주제: ${topic}\n\n스타일은 직접 고른다.`;
 
-    const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    const model = env.MODEL ?? DEFAULT_MODEL;
+    const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
     try {
-      const response = await client.messages.parse({
-        model: env.MODEL ?? "claude-opus-5",
-        max_tokens: 8000,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: instruction }],
-        output_config: {
-          effort: "medium",
-          format: zodOutputFormat(BlueprintSchema),
-        },
+      const response = await client.responses.parse({
+        model,
+        instructions: SYSTEM_PROMPT,
+        input: instruction,
+        max_output_tokens: 8000,
+        ...(supportsReasoning(model) ? { reasoning: { effort: "low" as const } } : {}),
+        text: { format: zodTextFormat(BlueprintSchema, "book_blueprint") },
       });
 
-      const parsed = response.parsed_output as Blueprint | null;
+      if (response.status === "incomplete") {
+        console.error("incomplete response", response.incomplete_details?.reason);
+        return json(
+          { error: "설계가 도중에 끊겼습니다. 주제를 조금 줄여 다시 시도해 주세요." },
+          502,
+          origin,
+        );
+      }
+
+      const parsed = response.output_parsed as Blueprint | null;
       if (!parsed) {
         return json(
           { error: "설계 결과를 해석하지 못했습니다. 다시 시도해 주세요." },
@@ -266,14 +281,14 @@ export default {
         origin,
       );
     } catch (err) {
-      if (err instanceof Anthropic.RateLimitError) {
+      if (err instanceof OpenAI.RateLimitError) {
         return json({ error: "모델 요청이 몰렸습니다. 잠시 후 다시 시도해 주세요." }, 429, origin);
       }
-      if (err instanceof Anthropic.AuthenticationError) {
+      if (err instanceof OpenAI.AuthenticationError) {
         return json({ error: "서버의 API 키가 유효하지 않습니다." }, 502, origin);
       }
-      if (err instanceof Anthropic.APIError) {
-        console.error("anthropic error", err.status, err.message);
+      if (err instanceof OpenAI.APIError) {
+        console.error("openai error", err.status, err.message);
         return json({ error: "모델 호출에 실패했습니다." }, 502, origin);
       }
       console.error("unexpected error", err);

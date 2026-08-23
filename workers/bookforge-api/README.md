@@ -1,10 +1,10 @@
 # bookforge-api — Cloudflare Worker
 
-웹 데모(`web/`)가 쓰는 유일한 백엔드다. 존재 이유는 하나 — **Anthropic API 키를 브라우저와
+웹 데모(`web/`)가 쓰는 유일한 백엔드다. 존재 이유는 하나 — **OpenAI API 키를 브라우저와
 Vercel 밖에 두는 것**.
 
 ```
-브라우저  ──POST /api/blueprint──▶  Cloudflare Worker  ──x-api-key──▶  Anthropic API
+브라우저  ──POST /api/blueprint──▶  Cloudflare Worker  ──Authorization──▶  OpenAI API
 (키 없음)                          (키는 여기 secret 에만)
 ```
 
@@ -14,7 +14,7 @@ Vercel에 올라가는 프런트엔드는 이 Worker의 **공개 URL**만 안다
 ## 배포 — 3단계
 
 사전 준비: [Cloudflare 계정](https://dash.cloudflare.com/sign-up)(무료 플랜으로 충분)과
-[Anthropic API 키](https://console.anthropic.com/settings/keys).
+[OpenAI API 키](https://platform.openai.com/api-keys).
 
 ```bash
 cd workers/bookforge-api
@@ -24,8 +24,8 @@ npm install
 npx wrangler login
 
 # 2. 키를 Worker secret 으로 넣는다 — 이 값은 저장소에 남지 않는다
-npx wrangler secret put ANTHROPIC_API_KEY
-#    프롬프트에 sk-ant-... 붙여넣기
+npx wrangler secret put OPENAI_API_KEY
+#    프롬프트에 sk-proj-... 붙여넣기
 
 # 3. 배포
 npx wrangler deploy
@@ -40,7 +40,7 @@ npx wrangler deploy
 
 ```bash
 curl https://bookforge-api.<계정서브도메인>.workers.dev/api/health
-# {"ok":true,"configured":true,"model":"claude-opus-5"}
+# {"ok":true,"configured":true,"model":"gpt-5.5"}
 ```
 
 ## 배포 직후 반드시 할 것 — Origin 좁히기
@@ -60,7 +60,7 @@ ALLOWED_ORIGINS = "https://bookforge-web.vercel.app,https://내도메인.com"
 ### `GET /api/health`
 
 ```json
-{ "ok": true, "configured": true, "model": "claude-opus-5" }
+{ "ok": true, "configured": true, "model": "gpt-5.5" }
 ```
 
 ### `POST /api/blueprint`
@@ -85,7 +85,7 @@ ALLOWED_ORIGINS = "https://bookforge-web.vercel.app,https://내도메인.com"
 }
 ```
 
-출력 형식은 Anthropic structured outputs(zod 스키마)로 강제하므로 응답 파싱이 실패할 여지가
+출력 형식은 OpenAI structured outputs(Responses API + zod 스키마)로 강제하므로 응답 파싱이 실패할 여지가
 없다. 실패 시에는 `{ "error": "…" }` 와 함께 4xx/5xx 를 반환한다.
 
 ## 이 Worker가 거는 방어선
@@ -94,13 +94,13 @@ ALLOWED_ORIGINS = "https://bookforge-web.vercel.app,https://내도메인.com"
 |---|---|---|
 | Origin 화이트리스트 | `ALLOWED_ORIGINS` | `wrangler.toml` `[vars]` |
 | 주제 길이 상한 | 120자 | `src/index.ts` `MAX_TOPIC_LEN` |
-| 출력 토큰 상한 | 8000 | `src/index.ts` `max_tokens` |
+| 출력 토큰 상한 | 8000 | `src/index.ts` `max_output_tokens` |
 | IP당 분당 요청 | 8회 | `wrangler.toml` `RATE_LIMIT_PER_MIN` |
-| 모델 | `claude-opus-5` | `wrangler.toml` `MODEL` |
+| 모델 | `gpt-5.5` | `wrangler.toml` `MODEL` |
 
 요청 빈도 제한은 Worker isolate 안의 최선 노력이다. 공개 사이트로 운영한다면 Cloudflare
 대시보드 → **Security / WAF → Rate limiting rules** 에서 `/api/*` 에 규칙을 하나 걸어 두는
-편이 확실하다. 비용 상한은 Anthropic Console → **Limits** 에서 월 예산으로 따로 거는 것을
+편이 확실하다. 비용 상한은 OpenAI Platform → **Settings → Limits** 에서 월 예산으로 따로 거는 것을
 권한다.
 
 ## 로컬 개발

@@ -150,7 +150,7 @@ examples/           예시 9권 PDF + 쇼케이스 36컷
 이 저장소에는 스킬 본체 외에 배포용 디렉터리가 두 개 더 있습니다.
 
 - `web/` — 예시 9권·스타일 6종·도해 트랙·게이트를 보여주는 쇼케이스 사이트와, 주제 한 줄로 표지 문안·스타일 선정·목차까지 설계해 보는 데모 (Next.js, Vercel)
-- `workers/bookforge-api/` — 그 데모가 호출하는 API 프록시. **Anthropic API 키는 이 Worker의 secret으로만 존재하며** 프런트엔드 번들·저장소 어디에도 실리지 않습니다 (Cloudflare Workers)
+- `workers/bookforge-api/` — 그 데모가 호출하는 API 프록시. **OpenAI API 키는 이 Worker의 secret으로만 존재하며** 프런트엔드 번들·저장소 어디에도 실리지 않습니다 (Cloudflare Workers)
 
 배포 절차는 [DEPLOY.md](DEPLOY.md)에 있습니다. 스킬을 로컬에서 쓰는 데에는 둘 다 필요하지 않습니다.
 

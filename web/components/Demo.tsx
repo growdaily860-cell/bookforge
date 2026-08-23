@@ -196,7 +196,7 @@ export default function Demo() {
         <div className="security-note">
           <div>
             <strong>키는 Cloudflare에만</strong>
-            Anthropic API 키는 <code className="inline">wrangler secret</code>으로 Worker에만
+            OpenAI API 키는 <code className="inline">wrangler secret</code>으로 Worker에만
             들어갑니다. 저장소·Vercel 빌드·브라우저 번들 어디에도 실리지 않습니다.
           </div>
           <div>

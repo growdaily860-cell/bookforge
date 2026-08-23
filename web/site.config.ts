@@ -1,7 +1,7 @@
 /**
  * 사이트 설정 — 비밀값은 여기에 두지 않는다.
  *
- * apiBase 는 Cloudflare Worker 의 공개 주소다. Anthropic API 키는 Worker 의
+ * apiBase 는 Cloudflare Worker 의 공개 주소다. OpenAI API 키는 Worker 의
  * secret 으로만 존재하며, 이 저장소·Vercel 빌드·브라우저 어디에도 실리지 않는다.
  * (workers/bookforge-api/README.md 의 3단계 배포 참고)
  *

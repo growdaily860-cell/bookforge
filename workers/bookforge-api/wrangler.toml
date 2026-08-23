@@ -4,11 +4,11 @@ compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
 
 # 비밀값은 여기에 두지 않는다. 아래 vars 는 전부 공개 설정이다.
-#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put OPENAI_API_KEY
 [vars]
 # 배포 후 실제 Vercel 도메인으로 좁힐 것. 비워 두면 모든 Origin 을 허용한다.
 ALLOWED_ORIGINS = "https://*.vercel.app,http://localhost:3000"
-MODEL = "claude-opus-5"
+MODEL = "gpt-5.5"
 RATE_LIMIT_PER_MIN = "8"
 
 [observability]

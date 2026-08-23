@@ -2,7 +2,7 @@
   "name": "bookforge-api",
   "version": "2.0.0",
   "private": true,
-  "description": "bookforge 데모용 Cloudflare Worker — Anthropic API 키를 Worker secret 뒤에 숨긴다.",
+  "description": "bookforge 데모용 Cloudflare Worker — OpenAI API 키를 Worker secret 뒤에 숨긴다.",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
@@ -10,7 +10,7 @@
     "tail": "wrangler tail"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.120.0",
+    "openai": "^7.5.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
