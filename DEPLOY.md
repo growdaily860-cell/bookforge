@@ -55,6 +55,13 @@ Environment Variables 에 `NEXT_PUBLIC_BOOKFORGE_API` 로 넣어도 된다(이�
 마지막으로 `workers/bookforge-api/wrangler.toml` 의 `ALLOWED_ORIGINS` 를 실제 Vercel
 도메인으로 좁히고 다시 `npx wrangler deploy`.
 
+## 현재 배포 (2026-08)
+
+| | 주소 |
+|---|---|
+| 사이트 | https://bookforge-site-green.vercel.app |
+| 데모 API | https://bookforge-api.growdaily860.workers.dev |
+
 ## 체크리스트
 
 - [ ] Vercel 프로젝트 Root Directory = `web`

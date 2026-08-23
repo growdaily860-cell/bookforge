@@ -6,8 +6,9 @@ compatibility_flags = ["nodejs_compat"]
 # 비밀값은 여기에 두지 않는다. 아래 vars 는 전부 공개 설정이다.
 #   wrangler secret put OPENAI_API_KEY
 [vars]
-# 배포 후 실제 Vercel 도메인으로 좁힐 것. 비워 두면 모든 Origin 을 허용한다.
-ALLOWED_ORIGINS = "https://*.vercel.app,http://localhost:3000"
+# 프로덕션 도메인 + 로컬 개발. 프리뷰 배포에서도 데모를 쓰려면
+# "https://bookforge-site-*.vercel.app" 를 추가한다. 비워 두면 모든 Origin 을 허용한다.
+ALLOWED_ORIGINS = "https://bookforge-site-green.vercel.app,http://localhost:3000"
 MODEL = "gpt-5.5"
 RATE_LIMIT_PER_MIN = "8"
 
