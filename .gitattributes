@@ -1,1 +1,3 @@
-*.bat text eol=crlf
+# .bat 는 CP949(한국어 Windows 콘솔 기본) + CRLF 로 저장한다.
+# 변환을 일절 하지 않도록 바이너리로 취급한다.
+*.bat -text

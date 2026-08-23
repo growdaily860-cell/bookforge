@@ -1,9 +1,8 @@
 @echo off
-chcp 65001 >nul 2>&1
 setlocal
 
-rem bookforge Windows ÏÑ§Ïπò ‚Äî Ï†ÄÏû•ÏÜåÎ•º ÌôïÏù∏ÌïòÍ≥† ÏóêÏù¥Ï†ÑÌä∏ Ïä§ÌÇ¨ Ìè¥ÎçîÏóê Ï†ïÏÖòÏùÑ Í±¥Îã§.
-rem ÏÇ¨Ïö©: Ïù¥ ÌååÏùºÏùÑ ÎçîÎ∏îÌÅ¥Î¶≠ÌïòÍ±∞ÎÇò cmd ÏóêÏÑú Ïã§Ìñâ. Í¥ÄÎ¶¨Ïûê Í∂åÌïú Î∂àÌïÑÏöî.
+rem bookforge Windows º≥ƒ° - ¿˙¿Âº“∏¶ »Æ¿Œ«œ∞Ì ø°¿Ã¿¸∆Æ Ω∫≈≥ ∆˙¥ıø° ¡§º«¿ª ∞«¥Ÿ.
+rem ªÁøÎ: ¿Ã ∆ƒ¿œ¿ª ¥ı∫Ì≈¨∏Ø«œ∞≈≥™ cmd ø°º≠ Ω««‡. ∞¸∏Æ¿⁄ ±««— ∫“« ø‰.
 
 set "SRC=%USERPROFILE%\Documents\bookforge"
 set "REPO=https://github.com/growdaily860-cell/bookforge.git"
@@ -13,12 +12,12 @@ echo ========================================
 echo  bookforge Windows setup
 echo ========================================
 echo.
-echo [1/3] Ï†ÄÏû•ÏÜå ÌôïÏù∏ : %SRC%
+echo [1/3] ¿˙¿Âº“ »Æ¿Œ : %SRC%
 
 if exist "%SRC%\SKILL.md" (
-    echo       OK - Ïù¥ÎØ∏ ÏûàÏäµÎãàÎã§.
+    echo       OK - ¿ÃπÃ ¿÷Ω¿¥œ¥Ÿ.
 ) else (
-    echo       ÏóÜÏäµÎãàÎã§. ÏÉàÎ°ú Î∞õÏäµÎãàÎã§...
+    echo       æ¯Ω¿¥œ¥Ÿ. ªı∑Œ πﬁΩ¿¥œ¥Ÿ...
     if not exist "%USERPROFILE%\Documents" mkdir "%USERPROFILE%\Documents"
     pushd "%USERPROFILE%\Documents"
     git clone "%REPO%"
@@ -27,26 +26,27 @@ if exist "%SRC%\SKILL.md" (
 
 if not exist "%SRC%\SKILL.md" (
     echo.
-    echo       Ïã§Ìå® - Ï†ÄÏû•ÏÜåÎ•º Ï§ÄÎπÑÌïòÏßÄ Î™ªÌñàÏäµÎãàÎã§.
-    echo       git Ïù¥ ÏÑ§ÏπòÎèº ÏûàÎäîÏßÄ ÌôïÏù∏ÌïòÏÑ∏Ïöî ^(git --version^).
+    echo       Ω«∆– - ¿˙¿Âº“∏¶ ¡ÿ∫Ò«œ¡ˆ ∏¯«ﬂΩ¿¥œ¥Ÿ.
+    echo       git ¿Ã º≥ƒ°µ≈ ¿÷¥¬¡ˆ »Æ¿Œ«œººø‰ ^(git --version^).
     goto :end
 )
 
 echo.
-echo [2/3] Ïä§ÌÇ¨ Ìè¥Îçî Ïó∞Í≤∞
+echo [2/3] Ω∫≈≥ ∆˙¥ı ø¨∞·
 call :link "%USERPROFILE%\.claude\skills" "Claude Code"
 call :link "%USERPROFILE%\.codex\skills"  "Codex"
-call :link "%USERPROFILE%\.agents\skills" "Í∏∞ÌÉÄ ÏóêÏù¥Ï†ÑÌä∏"
+call :link "%USERPROFILE%\.agents\skills" "±‚≈∏ ø°¿Ã¿¸∆Æ"
 
 echo.
-echo [3/3] ÌôïÏù∏
+echo [3/3] »Æ¿Œ
 call :verify "%USERPROFILE%\.claude\skills\bookforge"
 call :verify "%USERPROFILE%\.codex\skills\bookforge"
 call :verify "%USERPROFILE%\.agents\skills\bookforge"
 
 echo.
-echo ÎÅùÎÇ¨ÏäµÎãàÎã§. ÏïûÏúºÎ°úÎäî %SRC% ÏóêÏÑú git pull Ìïú Î≤àÏù¥Î©¥
-echo Ïó∞Í≤∞Îêú Î™®Îì† ÏóêÏù¥Ï†ÑÌä∏Í∞Ä ÎèôÏãúÏóê ÏµúÏã†Ïù¥ Îê©ÎãàÎã§.
+echo ≥°≥µΩ¿¥œ¥Ÿ.
+echo æ’¿∏∑Œ¥¬ ¿˙¿Âº“ø°º≠ git pull «— π¯¿Ã∏È ºº ∞˜ ∏µŒ √÷Ω≈¿Ã µÀ¥œ¥Ÿ.
+echo   %SRC%
 
 :end
 echo.
@@ -62,22 +62,22 @@ set "DEST=%~1\bookforge"
 if not exist "%BASE%" mkdir "%BASE%"
 
 if exist "%DEST%" (
-    rem /S ÏóÜÏù¥ ÏßÄÏö¥Îã§ - Ï†ïÏÖòÏù¥ÎÇò Îπà Ìè¥ÎçîÎßå ÏßÄÏõåÏßÄÍ≥†,
-    rem ÎÇ¥Ïö©Ïù¥ ÏûàÎäî ÏßÑÏßú Ìè¥ÎçîÎ©¥ Ïã§Ìå®ÌïúÎã§ (Ïã§ÏàòÎ°ú ÌååÏùºÏùÑ ÏßÄÏö∞ÏßÄ ÏïäÍ∏∞ ÏúÑÌï¥ÏÑúÎã§)
+    rem /S æ¯¿Ã ¡ˆøÓ¥Ÿ - ¡§º«¿Ã≥™ ∫Û ∆˙¥ı∏∏ ¡ˆøˆ¡ˆ∞Ì,
+    rem ≥ªøÎ¿Ã ¿÷¥¬ ¡¯¬• ∆˙¥ı∏È Ω«∆–«—¥Ÿ (Ω«ºˆ∑Œ ∆ƒ¿œ¿ª ¡ˆøÏ¡ˆ æ ±‚ ¿ß«ÿº≠¥Ÿ)
     rmdir "%DEST%" >nul 2>&1
     if exist "%DEST%" (
-        echo       [Í±¥ÎÑàÎúÄ] %NAME% - ÎπÑÏñ¥ÏûàÏßÄ ÏïäÏùÄ Ïã§Ï†ú Ìè¥ÎçîÍ∞Ä ÏûàÏäµÎãàÎã§.
+        echo       [∞«≥ ∂‹] %NAME% - ∫ÒæÓ¿÷¡ˆ æ ¿∫ Ω«¡¶ ∆˙¥ı∞° ¿÷Ω¿¥œ¥Ÿ.
         echo                %DEST%
-        echo                ÎÇ¥Ïö©ÏùÑ ÌôïÏù∏Ìïú Îí§ ÏßÅÏ†ë ÏßÄÏö∞Í≥† Ïù¥ Ïä§ÌÅ¨Î¶ΩÌä∏Î•º Îã§Ïãú Ïã§ÌñâÌïòÏÑ∏Ïöî.
+        echo                ≥ªøÎ¿ª »Æ¿Œ«— µ⁄ ¡˜¡¢ ¡ˆøÏ∞Ì ¿Ã Ω∫≈©∏≥∆Æ∏¶ ¥ŸΩ√ Ω««‡«œººø‰.
         exit /b
     )
 )
 
 mklink /J "%DEST%" "%SRC%" >nul 2>&1
 if errorlevel 1 (
-    echo       [Ïã§Ìå®] %NAME%
+    echo       [Ω«∆–] %NAME%
 ) else (
-    echo       [Ïó∞Í≤∞] %NAME%
+    echo       [ø¨∞·] %NAME%
 )
 exit /b
 
@@ -86,6 +86,6 @@ rem ---------------------------------------------------------------
 if exist "%~1\SKILL.md" (
     echo       OK  %~1
 ) else (
-    echo       --  %~1  ^(Ïó∞Í≤∞ Ïïà Îê®^)
+    echo       --  %~1  ^(ø¨∞· æ» µ ^)
 )
 exit /b
