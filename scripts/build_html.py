@@ -218,6 +218,7 @@ def build(book_dir: Path, book: dict, outline: dict, style_dir: Path, skill: Pat
     html = tpl.substitute(
         title=book.get("title", ""), subtitle=book.get("subtitle") or "",
         author=book.get("author", "bookforge"), date=book.get("date", ""),
+        publisher=book.get("publisher", "bookforge"),
         brand=key,
         cover_art=f"background-image:url('{cover_img.as_uri()}')" if cover_img.exists() else "",
         toc="<ol class=\"toc\">" + "\n".join(toc_items) + "</ol>",

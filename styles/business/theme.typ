@@ -301,7 +301,7 @@
     v(1fr)
     line(length: 40%, stroke: 0.4pt + rule-c)
     v(4pt)
-    [#meta.title · #meta.at("author", default: "bookforge") · #meta.at("date", default: "") 발행 · bookforge로 조판]
+    [#meta.title · #meta.at("author", default: "bookforge") · #meta.at("date", default: "") 발행 · 펴낸곳 #meta.at("publisher", default: "bookforge") · bookforge로 조판]
     linebreak()
     [본 보고서의 수치·인용은 본문 표기 출처를 따르며, 무단 전재를 금합니다.]
   })

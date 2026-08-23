@@ -179,7 +179,7 @@
     meta.title
     if meta.at("subtitle", default: none) != none [ — #meta.subtitle]
     linebreak()
-    [#meta.at("date", default: "") 발행 · 지은이 #meta.at("author", default: "bookforge")]
+    [#meta.at("date", default: "") 발행 · 지은이 #meta.at("author", default: "bookforge") · 펴낸곳 #meta.at("publisher", default: "bookforge")]
     linebreak()
     [조판 bookforge · 본문 Noto Serif KR·Libertinus Serif · 표제 Pretendard]
   })

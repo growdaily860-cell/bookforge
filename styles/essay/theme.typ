@@ -142,7 +142,7 @@
     linebreak()
     [초판 1쇄 발행 #meta.at("date", default: "")]
     linebreak()
-    [지은이 #meta.at("author", default: "bookforge") · 펴낸곳 bookforge]
+    [지은이 #meta.at("author", default: "bookforge") · 펴낸곳 #meta.at("publisher", default: "bookforge")]
     linebreak()
     [조판 bookforge · 본문 Noto Serif KR · 표지·라벨 Pretendard]
   })

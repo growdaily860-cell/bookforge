@@ -57,8 +57,11 @@ ls <SKILL>/vendor/antv-ssr.bundle.mjs \
 
 ```bash
 python3 <SKILL>/scripts/scaffold.py <book_dir> --style practical \
-  --title "제목" --subtitle "부제" --length short --author "저자" --date "2026-08"
+  --title "제목" --subtitle "부제" --length short --author "저자" --date "2026-08" \
+  --publisher "펴낸곳"
 ```
+
+`--title`·`--subtitle`·`--author`·`--publisher`·`--date`는 표지와 판권면에 그대로 실린다 — 사용자가 말한 값이 있으면 반드시 넘긴다(`--publisher` 생략 시 `bookforge`).
 
 `--length`: short/standard/long — **쪽수 범위의 정본은 각 스타일 `tokens.json`의 `length_pages`**(short는 스타일별 22~70쪽 대역, INV-1에 따라 산출물 쪽수는 WARN만). `--brand "#hex"`로 브랜드색 교체, `--images vector|generated|none`으로 이미지 정책(벡터만·생성 아트 포함·없음) 지정.
 

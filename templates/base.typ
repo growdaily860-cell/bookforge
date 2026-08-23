@@ -203,7 +203,7 @@
     linebreak()
     if "date" in meta [초판 1쇄 발행 #meta.date]
     linebreak()
-    [펴낸곳 bookforge · 조판 bookforge 자동 조판 파이프라인]
+    [펴낸곳 #meta.at("publisher", default: "bookforge") · 조판 bookforge 자동 조판 파이프라인]
     linebreak()
     [본문 서체 #merged((:)).body-font.at(0) · 표제 서체 #merged((:)).display-font.at(0)]
     linebreak()

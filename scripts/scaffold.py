@@ -18,6 +18,8 @@ def main():
     p.add_argument("--subtitle", default=None)
     p.add_argument("--length", default="short", choices=["short", "standard", "long"])
     p.add_argument("--author", default="bookforge")
+    p.add_argument("--publisher", default=None,
+                   help="펴낸곳. 생략하면 스타일 기본값(bookforge)이 쓰인다")
     p.add_argument("--brand", default=None)
     p.add_argument("--date", default=None)
     p.add_argument("--images", default="vector", choices=["vector", "generated", "none"])
@@ -35,6 +37,8 @@ def main():
         book["brand"] = a.brand
     if a.date:
         book["date"] = a.date
+    if a.publisher:
+        book["publisher"] = a.publisher
     (d / "book.json").write_text(json.dumps(book, ensure_ascii=False, indent=2), encoding="utf-8")
 
     outline = {"chapters": [
